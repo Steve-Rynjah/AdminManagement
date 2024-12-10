@@ -34,8 +34,6 @@ export default function CabinTable() {
     queryFn: getCabins,
   })
 
-  console.log(isLoading)
-
   if(isLoading) return <Spinner/>
 
   return (
