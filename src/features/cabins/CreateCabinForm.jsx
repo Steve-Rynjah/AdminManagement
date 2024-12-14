@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import FormRow from "../../ui/FormRow";
 import { useCreateCabin, useEditCabin } from "./useCabinHooks";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {} , onClose}) {
   const { isCreating, createCabin } = useCreateCabin();
   const { isEditing, editCabin } = useEditCabin();
   const isLoading = isCreating || isEditing;
@@ -29,7 +29,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         { onSuccess: () => reset() }
       );
     } else {
-      createCabin({ ...data, image }, { onSuccess: () => reset() });
+      createCabin({ ...data, image }, { onSuccess: () => {reset() , onClose?.()}});
     }
   };
 
@@ -38,7 +38,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   };
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form onSubmit={handleSubmit(onSubmit, onError)} type={onClose ? "modal" : "regular"}>
       <FormRow label={"Cabin nam"} error={errors?.name?.message}>
         <Input
           type="text"
@@ -122,7 +122,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset" onClick={reset}>
+        <Button variation="secondary" type="reset" onClick={()=> {reset(), onClose?.()}}>
           Cancel
         </Button>
         <Button disabled={isLoading}>
