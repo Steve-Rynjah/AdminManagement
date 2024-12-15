@@ -8,6 +8,10 @@ import {
   HiPencil,
   HiTrash
 } from "react-icons/hi2";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import CustomTable from "../../ui/Table";
+
 
 const TableRow = styled.div`
   display: grid;
@@ -68,8 +72,7 @@ export default function CabinRow({cabin}) {
   }
 
   return (
-   <>
-     <TableRow role="row">
+    <CustomTable.Row columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
       <Img src={image}/>
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} guests</div>
@@ -77,12 +80,25 @@ export default function CabinRow({cabin}) {
       {discount ? (<Discount>{formatCurrency(discount)}</Discount>) : <span>&mdash;</span>}
       <div>
       <button onClick={duplicateCabin} disabled={isCreating}><HiSquare2Stack/></button>
-      <button onClick={()=> setShowForm(!showForm)}><HiPencil/></button>
-      <button onClick={()=> deleteCabin(cabinId)} disabled={isDeleting}><HiTrash/></button>
+      <Modal>
+        <Modal.Open opens={"edit"}>
+        <button onClick={()=> setShowForm(!showForm)}><HiPencil/></button>
+        </Modal.Open>
+        <Modal.Window name={"edit"}>
+            <CreateCabinForm cabinToEdit={cabin}/>
+        </Modal.Window>
+
+        <Modal.Open opens={"delete-cabin"}>
+        <button><HiTrash/></button>
+        </Modal.Open>
+        <Modal.Window name={"delete-cabin"}>
+          <ConfirmDelete  resourceName={"cabin"} disabled={isDeleting} onConfirm={()=> deleteCabin(cabinId)}/>
+        </Modal.Window>
+
+      </Modal>
+
       </div>
-    </TableRow>
-    {showForm && <CreateCabinForm cabinToEdit={cabin}/>}
-   </>
+    </CustomTable.Row>
   )
 }
 

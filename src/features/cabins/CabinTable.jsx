@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Spinner from "../../ui/Spinner"
 import CabinRow from "./CabinRow";
 import { useFetchCabins } from "./useCabinHooks";
+import  CustomTable  from "../../ui/Table";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -33,17 +34,22 @@ export default function CabinTable() {
   if(isLoading) return <Spinner/>
 
   return (
-    <Table role="table">
-      <TableHeader role="row">
+    <CustomTable columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <CustomTable.Header>
         <div></div>
         <div>Cabin</div>
         <div>Capacity</div>
         <div>Price</div>
         <div>Discount</div>
         <div></div>
-      </TableHeader>
-      {cabinData?.map((cabin)=> <CabinRow key={cabin?.id} cabin={cabin}/>)}
-    </Table>
+      </CustomTable.Header>
+
+      <CustomTable.Body
+          data={cabinData}
+          render={(cabin)=> <CabinRow key={cabin?.id} cabin={cabin}/>}
+      />
+      {/* {cabinData?.map((cabin)=> <CabinRow key={cabin?.id} cabin={cabin}/>)} */}
+    </CustomTable>
   )
 }
 

@@ -26,7 +26,7 @@ function CreateCabinForm({ cabinToEdit = {} , onClose}) {
     if (isEditSession) {
       editCabin(
         { newCabinData: { ...data, image }, id: editId },
-        { onSuccess: () => reset() }
+        { onSuccess: () => {reset() , onClose?.()}}
       );
     } else {
       createCabin({ ...data, image }, { onSuccess: () => {reset() , onClose?.()}});
