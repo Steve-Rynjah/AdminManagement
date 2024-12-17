@@ -30,7 +30,7 @@ const StyledHeader = styled(CommonRow)`
 `;
 
 const StyledRow = styled(CommonRow)`
-  padding: 1.2rem 2.4rem;
+  padding: 1.2rem 4rem;
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
@@ -83,7 +83,7 @@ function Row({children}){
 }
 
 function Body({data, render}){
-  if(!data) return <Empty>No data to show at the moment!</Empty>
+  if(!data?.length) return <StyledBody><Empty>No data to show at the moment!</Empty></StyledBody>
   return <StyledBody>{data?.map(render)}</StyledBody>
 }
 

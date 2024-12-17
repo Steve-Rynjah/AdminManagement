@@ -79,7 +79,7 @@ export default function CabinRow({ cabin }) {
   }
 
   return (
-    <CustomTable.Row columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+    <CustomTable.Row columns="0.6fr 1.8fr 2.2fr 1fr 1fr 20fr">
       <Img src={image} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} guests</div>
