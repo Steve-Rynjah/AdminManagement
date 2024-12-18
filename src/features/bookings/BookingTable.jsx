@@ -5,10 +5,11 @@ import CustomTable from "../../ui/Table";
 import Empty from "../../ui/Empty";
 import Spinner from "../../ui/Spinner";
 import { useFetchBookins } from "./useBookinHooks";
+import { Pagination } from "../../ui/Pagination";
 
 function BookingTable() {
   const bookings = [];
-  const {isLoading, bookingData} = useFetchBookins()
+  const {isLoading, bookingData, count} = useFetchBookins()
 
   if(isLoading) return <Spinner/>
 
@@ -32,6 +33,9 @@ function BookingTable() {
             <BookingRow key={booking.id} booking={booking} />
           )}
         />
+        <CustomTable.Footer>
+          <Pagination count={count}/>
+        </CustomTable.Footer>
       </CustomTable>
     </Menus>
   );
