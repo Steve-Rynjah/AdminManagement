@@ -12,7 +12,7 @@ export const bookings = [
     created_at: fromToday(-20, true),
     startDate: fromToday(0),
     endDate: fromToday(7),
-    cabinId: 1,
+    cabinId: 72,
     guestId: 2,
     hasBreakfast: true,
     observations:
