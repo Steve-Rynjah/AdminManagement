@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
-import { getBookings } from "../../services/apiBookings"
-import { useSearchParams } from "react-router-dom"
+import { getBooking, getBookings } from "../../services/apiBookings"
+import { useParams, useSearchParams } from "react-router-dom"
 import { PAGE_SIZE } from "../../utils/constant"
 
 export function useFetchBookins(){
@@ -45,3 +45,14 @@ export function useFetchBookins(){
   
   return {isLoading, bookingData, error, count, page}
 }
+
+export function useFetchBookingDetail(){
+    const {bookingId} = useParams()
+    const {isLoading, data: bookingDetailData, error} = useQuery({
+      queryKey: ['bookingDetal'],
+      queryFn: ()=> getBooking(bookingId),
+      retry: false
+    })
+    return {isLoading, bookingDetailData, error}
+}
+
