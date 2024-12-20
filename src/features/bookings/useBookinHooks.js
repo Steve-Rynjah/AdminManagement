@@ -49,7 +49,7 @@ export function useFetchBookins(){
 export function useFetchBookingDetail(){
     const {bookingId} = useParams()
     const {isLoading, data: bookingDetailData, error} = useQuery({
-      queryKey: ['bookingDetal'],
+      queryKey: ['bookingDetal', bookingId],
       queryFn: ()=> getBooking(bookingId),
       retry: false
     })
