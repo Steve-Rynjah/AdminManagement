@@ -9,10 +9,13 @@ import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
-import { useFetchBookingDetail } from "./useBookinHooks";
+import { useDeleteBooking, useFetchBookingDetail } from "./useBookinHooks";
 import Spinner from "../../ui/Spinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { HiArrowDownOnSquare } from "react-icons/hi2";
+import { HiArrowDownOnSquare, HiArrowUpOnSquare } from "react-icons/hi2";
+import { useCheckout } from "../check-in-out/useCheckin";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -23,6 +26,8 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const booking = {};
   const { bookingDetailData, isLoading, error } = useFetchBookingDetail();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
+  const { checkout, isCheckingOut } = useCheckout();
   const navigate = useNavigate();
 
   //const status = "checked-in";
@@ -59,6 +64,33 @@ function BookingDetail() {
             Check in
           </Button>
         )}
+        {status === "checked-in" && (
+          <Button
+            icon={<HiArrowUpOnSquare />}
+            onClick={() => checkout(bookingId)}
+            disabled={isCheckingOut}
+          >
+            Check out
+          </Button>
+        )}
+        <Modal>
+          <Modal.Open opens={"delete-booking"}>
+          <Button
+            variation="danger"
+          >
+            Delete booking
+          </Button>
+          </Modal.Open>
+          <Modal.Window name="delete-booking">
+            <ConfirmDelete
+              resourceName="booking"
+              onConfirm={() => deleteBooking(bookingId, {
+                onSuccess: ()=> navigate(-1)
+              })}
+            />
+          </Modal.Window>
+        </Modal>
+     
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

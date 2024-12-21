@@ -37,16 +37,22 @@ const FilterButton = styled.button`
 
 function Filter({ filterField, options }) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentFilter = searchParams.get(filterField) || options.at(0)?.value
+  const currentFilter = searchParams.get(filterField) || options.at(0)?.value;
   function handleClick(value) {
     searchParams.set(filterField, value);
+    if (searchParams.get("page")) searchParams.set("page", 1); //Issue which Resolve if it's in page 2 or 3... and user try to filter, which response data from the api comes in page 1
     setSearchParams(searchParams);
   }
 
   return (
     <StyledFilter>
       {options?.map((option, index) => (
-        <FilterButton key={index} onClick={() => handleClick(option?.value)} active={option?.value === currentFilter} disabled={option?.value === currentFilter}>
+        <FilterButton
+          key={index}
+          onClick={() => handleClick(option?.value)}
+          active={option?.value === currentFilter}
+          disabled={option?.value === currentFilter}
+        >
           {option?.label}
         </FilterButton>
       ))}
