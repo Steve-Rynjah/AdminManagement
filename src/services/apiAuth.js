@@ -1,5 +1,22 @@
 import supabase from "./supabase";
 
+export async function signupAuth({ fullName, email, password}) {
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      fullName: fullName,
+      avatar: ""
+    }
+  });
+
+  if (error) {
+    throw new Error("Could not register!");
+  }
+
+  return data;
+}
+
 export async function loginAuth({ email, password }) {
   const { data, error } = await supabase.auth.signInWithPassword({
     email: email,
@@ -17,8 +34,6 @@ export async function loginAuth({ email, password }) {
 export async function getCurrentUser() {
   const { data: session } = await supabase.auth.getSession();
 
-  console.log("session===>>>", session)
-
   if (!session?.session) return null;
 
   const { data, error } = await supabase.auth.getUser();
@@ -29,4 +44,12 @@ export async function getCurrentUser() {
   }
 
   return data?.user;
+}
+
+export async function logoutAuth() {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    throw new Error(error?.message);
+  }
 }

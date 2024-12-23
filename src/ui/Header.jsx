@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { Logout } from "../features/authentication/Logout"
 
 export default function Header() {
 
@@ -9,7 +10,7 @@ export default function Header() {
 
   return (
     <StyledHeader>
-      HEADER
+      <Logout/>
     </StyledHeader>
   )
 }
