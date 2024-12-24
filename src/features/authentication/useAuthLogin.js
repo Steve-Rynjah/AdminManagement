@@ -1,16 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { getCurrentUser, logoutAuth, loginAuth, signupAuth } from "../../services/apiAuth";
+import { getCurrentUser, logoutAuth, loginAuth, signup as signupApi, updateCurrentUser} from "../../services/apiAuth";
 
-export function useAuthSignup() {
-  const { mutate: signup, isPending: isLoading } = useMutation({
-    mutationFn: () => signupAuth,
-    onSuccess: (userData) => {
-      toast.success("User successfully created");
-    },
-    onError: (err) => {
-      toast.error(err?.message);
+export function useSignup() {
+  const { mutate: signup, isLoading } = useMutation({
+    mutationFn: signupApi,
+    onSuccess: (user) => {
+      toast.success(
+        "Account successfully created! Please verufy the new account from the user's email address."
+      );
     },
   });
 
@@ -57,4 +56,19 @@ export function useAuthLogout(){
   })
 
   return {logout, isLoggingOut}
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  const { mutate: updateUser, isLoading: isUpdating } = useMutation({
+    mutationFn: updateCurrentUser,
+    onSuccess: ({ user }) => {
+      toast.success("User account successfully updated");
+      queryClient.setQueryData(["user"], user);
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  return { updateUser, isUpdating };
 }
