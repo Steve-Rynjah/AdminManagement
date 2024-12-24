@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateBooking } from "../../services/apiBookings";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getStaysTodayActivity, updateBooking } from "../../services/apiBookings";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -39,5 +39,14 @@ export function useCheckout() {
   });
 
   return { checkout, isCheckingOut };
+}
+
+export function useTodayActivity(){
+  const { isLoading, data: activities } = useQuery({
+    queryFn: getStaysTodayActivity,
+    queryKey: ["today-activity"],
+  });
+
+  return { activities, isLoading };
 }
 
